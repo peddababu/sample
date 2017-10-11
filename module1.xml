@@ -1,0 +1,5 @@
+<project name="module1" default="echo">
+<target name="echo">
+<echo>this is a module1</echo>
+</target>
+</project>

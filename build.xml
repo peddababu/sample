@@ -1,0 +1,78 @@
+<project name="ant script" default="test">
+<import file="module1.xml"/>
+
+<!--path id="libpath">
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>  
+
+
+<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="libpath"/>
+<target name="checkout">
+    <svn username="srihari" password="srihari">
+      <checkout url="https://Dell:8443/svn/acculator/trunk" revision="HEAD" destPath="src_latest" />
+    </svn>
+  </target-->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <target name="letter">
+  <echo message="The first five letters of the alphabet are:"/>
+<for list="a,b,c,d,e" param="letter">
+  <sequential>
+    <echo>Letter @{letter}</echo>
+  </sequential>
+</for>
+</target>
+        
+  <target name="test" depends="letter">
+        <antcallback target="-testcb" return="a,b"/>
+       <echo> ${a}</echo>
+        <echo> ${b}</echo>
+    </target>
+
+    <target name="-testcb">
+       <property name="a" value="10"/>
+        <property name="b" value="20"/>
+    </target>
+
+  <property name="foo" value="100"/>
+  <property name="bar" value="200"/>
+  <target name="ifstatement">
+  <if>
+ <equals arg1="${foo}" arg2="${bar}" />
+ <then>
+   <echo message="The value of property foo is bar" />
+ </then>
+ <else>
+   <echo message="The value of property foo is not bar" />
+ </else>
+</if>
+</target>
+
+
+
+<property name="build-dir" value="build/test/classes"/>
+<property name="version" value="1.0"/>
+<target name="echo">
+<echo>this is a java </echo>
+</target>
+<target name="clean" depends="echo">
+<delete dir="${build-dir}"/>
+<delete dir="package"/>
+</target>
+<target name="create" depends="clean">
+<antcall target="clean"/>
+<mkdir dir="${build-dir}"/>
+<mkdir dir="package"/>
+</target>
+<target name="compile" depends="create">
+<ant antfile="module1.xml"/>
+<javac srcdir="source" destdir="${build-dir}"/>
+</target>
+<target name ="package" depends="compile">
+<jar destfile ="package/app-1.0-jar" basedir="build/classes"/>
+</target>
+<target name ="copy" depends="package">
+<copy file="subbu.txt" todir="maven"/>
+</target>
+</project>
